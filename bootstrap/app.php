@@ -2,26 +2,38 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-//根据域名配置切换不同环境
-$httpName = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
-$suffix   = empty($httpName) ? '' : substr($httpName, 0, 3);
-switch ($suffix) {
-    case 'sof':
-        $environment = '.env.produce';
+$defaultEnv = '.env.local';
+if (isset($_SERVER['HTTP_HOST'])) {
+    //根据域名配置切换不同环境
+    $suffix   = ! empty($_SERVER['HTTP_HOST']) ? substr($_SERVER['HTTP_HOST'], 0, 3) : '';
+    switch ($suffix) {
+        case 'sof':
+            $environment = '.env.produce';
 
-        break;
-    case 'dev':
-        $environment = '.env.dev';
+            break;
+        case 'dev':
+            $environment = '.env.dev';
 
-        break;
-    case 'tes':
-        $environment = '.env.test';
+            break;
+        case 'tes':
+            $environment = '.env.test';
 
-        break;
-    default:
-        $environment = '.env.local';
+            break;
+        default:
+            $environment = $defaultEnv;
 
-        break;
+            break;
+    }
+} else {
+    //指定执行命令环境
+    $environment = $defaultEnv;
+    if ( ! empty($argv)) {
+        foreach ($argv as $argvStr) {
+            if (strstr($argvStr, '--env=') !== false) {
+                $environment = str_replace('--env=', '.env.', $argvStr);
+            }
+        }
+    }
 }
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
