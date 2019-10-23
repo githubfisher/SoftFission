@@ -2,21 +2,22 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$defaultEnv = '.env.local';
+$envPrefix  = '.env.';
+$defaultEnv = $envPrefix . 'local';
 if (isset($_SERVER['HTTP_HOST'])) {
     //根据域名配置切换不同环境
     $suffix   = ! empty($_SERVER['HTTP_HOST']) ? substr($_SERVER['HTTP_HOST'], 0, 3) : '';
     switch ($suffix) {
         case 'sof':
-            $environment = '.env.produce';
+            $environment = $envPrefix . 'produce';
 
             break;
         case 'dev':
-            $environment = '.env.dev';
+            $environment = $envPrefix . 'dev';
 
             break;
         case 'tes':
-            $environment = '.env.test';
+            $environment = $envPrefix . 'test';
 
             break;
         default:
@@ -30,7 +31,7 @@ if (isset($_SERVER['HTTP_HOST'])) {
     if ( ! empty($argv)) {
         foreach ($argv as $argvStr) {
             if (strstr($argvStr, '--env=') !== false) {
-                $environment = str_replace('--env=', '.env.', $argvStr);
+                $environment = str_replace('--env=', $envPrefix, $argvStr);
             }
         }
     }
