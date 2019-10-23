@@ -38,7 +38,8 @@ if (isset($_SERVER['HTTP_HOST'])) {
 }
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
-    dirname(__DIR__) . $environment
+    dirname(__DIR__),
+    $environment
 ))->bootstrap();
 
 /*
