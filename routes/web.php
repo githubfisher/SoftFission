@@ -12,5 +12,5 @@
  */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version() . ' ' . app()->environment();
+    return 'Hello, ' . app()->environment();
 });
