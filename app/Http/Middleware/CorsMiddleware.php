@@ -3,7 +3,6 @@ namespace App\Http\Middleware;
 
 use Log;
 use Closure;
-use Illuminate\Http\Response;
 
 class CorsMiddleware
 {
@@ -54,12 +53,12 @@ class CorsMiddleware
     }
 
     /**
-     * @param Response $response
-     * @param string   $origin
+     * @param object $response
+     * @param string $origin
      *
-     * @return Response
+     * @return mixed
      */
-    public function setCorsHeaders(Response $response, string $origin)
+    public function setCorsHeaders(object $response, string $origin)
     {
         foreach ($this->headers as $key => $value) {
             $response->header($key, $value);
