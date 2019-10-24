@@ -28,5 +28,17 @@ $api->version('v1', [
         // 空路由, 具体处理由跨域中间件cors完成
     });
 
-    $api->get('/user/auth', 'User\Auth@index');
+    $api->get('/user/login', 'User\Auth@login');
+    $api->get('/admin/login', 'Admin\Auth@login');
+    $api->get('/ops/login', 'Ops\Auth@login');
+
+    $api->group(['middleware' => 'api.auth'], function (\Dingo\Api\Routing\Router $api) {
+        $api->get('/user/info', 'User\Auth@info');
+    });
+    $api->group(['middleware' => ['admin', 'api.auth']], function (\Dingo\Api\Routing\Router $api) {
+        $api->get('/admin/info', 'Admin\Auth@info');
+    });
+    $api->group(['middleware' => 'api.auth'], function (\Dingo\Api\Routing\Router $api) {
+        $api->get('/ops/info', 'User\Auth@info');
+    });
 });
