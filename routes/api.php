@@ -28,17 +28,32 @@ $api->version('v1', [
         // 空路由, 具体处理由跨域中间件cors完成
     });
 
-    $api->get('/user/login', 'User\Auth@login');
-    $api->get('/admin/login', 'Admin\Auth@login');
-    $api->get('/ops/login', 'Ops\Auth@login');
+    /**
+     * 无需认证的接口
+     */
+    $api->group(['prefix' => '/user'], function (\Dingo\Api\Routing\Router $api) {
+        $api->post('login', 'User\AuthController@login');
+        $api->post('register', 'User\AuthController@register');
+    });
+    $api->group(['prefix' => '/admin'], function (\Dingo\Api\Routing\Router $api) {
+        $api->post('login', 'Admin\AuthController@login');
+        $api->post('register', 'Admin\AuthController@register');
+    });
+    $api->group(['prefix' => '/ops'], function (\Dingo\Api\Routing\Router $api) {
+        $api->post('login', 'Ops\AuthController@login');
+        $api->post('register', 'Ops\AuthController@register');
+    });
 
+    /**
+     * 需认证的接口
+     */
     $api->group(['middleware' => 'api.auth'], function (\Dingo\Api\Routing\Router $api) {
-        $api->get('/user/info', 'User\Auth@info');
+        $api->get('/user/me', 'User\AuthController@me');
     });
     $api->group(['middleware' => ['admin', 'api.auth']], function (\Dingo\Api\Routing\Router $api) {
-        $api->get('/admin/info', 'Admin\Auth@info');
+        $api->get('/admin/me', 'Admin\AuthController@me');
     });
-    $api->group(['middleware' => 'api.auth'], function (\Dingo\Api\Routing\Router $api) {
-        $api->get('/ops/info', 'User\Auth@info');
+    $api->group(['middleware' => ['ops', 'api.auth']], function (\Dingo\Api\Routing\Router $api) {
+        $api->get('/ops/me', 'Ops\AuthController@me');
     });
 });
