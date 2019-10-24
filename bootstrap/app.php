@@ -101,8 +101,10 @@ $app->singleton(
 // ]);
 
  $app->routeMiddleware([
-     'auth' => App\Http\Middleware\Authenticate::class,
-     'cors' => App\Http\Middleware\CorsMiddleware::class,
+     'auth'  => App\Http\Middleware\Authenticate::class,
+     'cors'  => App\Http\Middleware\CorsMiddleware::class,
+     'admin' => \App\Http\Middleware\AdminAuthGuard::class,
+     'ops'   => \App\Http\Middleware\OpsAuthGuard::class,
  ]);
 
 /*
