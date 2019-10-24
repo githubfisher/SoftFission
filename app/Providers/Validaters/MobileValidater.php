@@ -4,7 +4,7 @@ namespace App\Providers\Validaters;
 use Validator;
 use Illuminate\Support\ServiceProvider;
 
-class Mobile extends ServiceProvider
+class MobileValidater extends ServiceProvider
 {
     /**
      * 启动应用服务

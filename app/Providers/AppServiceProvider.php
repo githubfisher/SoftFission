@@ -2,6 +2,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Providers\Validaters\MobileValidater;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,5 +18,7 @@ class AppServiceProvider extends ServiceProvider
             app()->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
             app()->register(\Mnabialek\LaravelSqlLogger\Providers\ServiceProvider::class);
         }
+
+        app()->register(MobileValidater::class);
     }
 }
