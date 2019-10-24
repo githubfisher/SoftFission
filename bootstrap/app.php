@@ -6,17 +6,17 @@ $envPrefix  = '.env.';
 $defaultEnv = $envPrefix . 'local';
 if (isset($_SERVER['HTTP_HOST'])) {
     //根据域名配置切换不同环境
-    $suffix   = ! empty($_SERVER['HTTP_HOST']) ? substr($_SERVER['HTTP_HOST'], 0, 3) : '';
+    $suffix   = ! empty($_SERVER['HTTP_HOST']) ? substr($_SERVER['HTTP_HOST'], 0, 2) : '';
     switch ($suffix) {
-        case 'sof':
+        case 'so':
             $environment = $envPrefix . 'produce';
 
             break;
-        case 'dev':
+        case 'de':
             $environment = $envPrefix . 'dev';
 
             break;
-        case 'tes':
+        case 'te':
             $environment = $envPrefix . 'test';
 
             break;
@@ -60,6 +60,10 @@ $app = new Laravel\Lumen\Application(
 $app->withFacades();
 $app->withEloquent();
 
+$app->configure('api');
+$app->configure('auth');
+$app->configure('allow_origins');
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
@@ -96,9 +100,10 @@ $app->singleton(
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+ $app->routeMiddleware([
+     'auth' => App\Http\Middleware\Authenticate::class,
+     'cors' => App\Http\Middleware\CorsMiddleware::class,
+ ]);
 
 /*
 |--------------------------------------------------------------------------
@@ -112,8 +117,10 @@ $app->singleton(
  */
 
 $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+$app->register(Dingo\Api\Provider\LumenServiceProvider::class);
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
