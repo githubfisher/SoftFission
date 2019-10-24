@@ -5,8 +5,13 @@ use App\Http\Controllers\Controller;
 
 class Auth extends Controller
 {
-    public function index()
+    public function login()
     {
-        $this->response->errorBadRequest();
+        $this->response->errorForbidden();
+    }
+
+    public function info()
+    {
+        $this->response->errorForbidden();
     }
 }
