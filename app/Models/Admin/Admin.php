@@ -11,7 +11,7 @@ class Admin extends Model implements AuthenticatableContract, AuthorizableContra
 {
     use Authenticatable, Authorizable;
 
-    protected $table = 'ops';
+    protected $table = 'admin';
     /**
      * The attributes that are mass assignable.
      *
