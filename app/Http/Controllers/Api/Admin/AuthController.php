@@ -28,7 +28,7 @@ class AuthController extends Controller
             'username' => $request->get('username'),
             'password' => Hash::make($request->get('password')),
         ]);
-        $token = Auth::guard('admin')->login($user);
+        $token = Auth::guard()->login($user);
 
         return response()->json(compact('token'));
     }
@@ -48,7 +48,7 @@ class AuthController extends Controller
 
         $credentials = $request->only(['mobile', 'password']);
 
-        return (($token = Auth::guard('admin')->attempt($credentials))
+        return (($token = Auth::attempt($credentials))
             ? response()->json(['token' => $token], 201)
             : response()->json(['error' => '账号或密码错误'], 401));
     }
