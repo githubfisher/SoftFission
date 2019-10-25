@@ -31,17 +31,17 @@ $api->version('v1', [
     /**
      * 无需认证的接口
      */
-    $api->group(['prefix' => '/user'], function (\Dingo\Api\Routing\Router $api) {
+    $api->group(['prefix' => '/user/auth'], function (\Dingo\Api\Routing\Router $api) {
         $api->post('login', 'User\AuthController@login');
         $api->post('register', 'User\AuthController@register');
     });
 
-    $api->group(['prefix' => '/admin', 'middleware' => 'admin'], function (\Dingo\Api\Routing\Router $api) {
+    $api->group(['prefix' => '/admin/auth', 'middleware' => 'admin'], function (\Dingo\Api\Routing\Router $api) {
         $api->post('login', 'Admin\AuthController@login');
         $api->post('register', 'Admin\AuthController@register');
     });
 
-    $api->group(['prefix' => '/ops', 'middleware' => 'ops'], function (\Dingo\Api\Routing\Router $api) {
+    $api->group(['prefix' => '/ops/auth', 'middleware' => 'ops'], function (\Dingo\Api\Routing\Router $api) {
         $api->post('login', 'Ops\AuthController@login');
         $api->post('register', 'Ops\AuthController@register');
     });
@@ -50,14 +50,14 @@ $api->version('v1', [
      * 需认证的接口
      */
     $api->group(['middleware' => ['refresh', 'api.auth']], function (\Dingo\Api\Routing\Router $api) {
-        $api->get('/user/me', 'User\AuthController@me');
+        $api->get('/user/auth/me', 'User\AuthController@me');
     });
 
     $api->group(['middleware' => ['admin', 'refresh', 'api.auth']], function (\Dingo\Api\Routing\Router $api) {
-        $api->get('/admin/me', 'Admin\AuthController@me');
+        $api->get('/admin/auth/me', 'Admin\AuthController@me');
     });
 
     $api->group(['middleware' => ['ops', 'refresh', 'api.auth']], function (\Dingo\Api\Routing\Router $api) {
-        $api->get('/ops/me', 'Ops\AuthController@me');
+        $api->get('/ops/auth/me', 'Ops\AuthController@me');
     });
 });
