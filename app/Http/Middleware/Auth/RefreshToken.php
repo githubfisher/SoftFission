@@ -29,16 +29,16 @@ class RefreshToken extends BaseMiddleware
                 return $next($request);
             }
 
-            throw new UnauthorizedHttpException('jwt-auth', '未登录');
-        } catch (TokenExpiredException $exception) {
+            throw new UnauthorizedHttpException('jwt-auth', 'Unauthorized');
+        } catch (TokenExpiredException $e) {
             try {
                 //刷新token
                 $token = $this->auth->refresh(true, true);
                 //使用一次性登录以保证此次请求的成功
                 Auth::guard()->onceUsingId($this->auth->manager()->getPayloadFactory()->buildClaimsCollection()->toPlainArray()['sub']);
-            } catch (JWTException $exception) {
+            } catch (JWTException $e) {
                 //如果捕获到此异常，即代表 refresh 也过期了，用户无法刷新令牌，需要重新登录。
-                throw new UnauthorizedHttpException('jwt-auth', $exception->getMessage());
+                throw new UnauthorizedHttpException('jwt-auth', $e->getMessage(), $e, $e->getCode());
             }
         }
 
