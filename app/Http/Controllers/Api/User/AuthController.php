@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers\Api\User;
 
-use Log;
 use Auth;
 use App\Models\User\User;
 use Illuminate\Http\Request;
