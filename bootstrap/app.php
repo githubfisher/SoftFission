@@ -75,15 +75,8 @@ $app->configure('allow_origins');
 |
  */
 
-$app->singleton(
-    Illuminate\Contracts\Debug\ExceptionHandler::class,
-    App\Exceptions\Handler::class
-);
-
-$app->singleton(
-    Illuminate\Contracts\Console\Kernel::class,
-    App\Console\Kernel::class
-);
+$app->singleton(Illuminate\Contracts\Debug\ExceptionHandler::class, App\Exceptions\Handler::class);
+$app->singleton(Illuminate\Contracts\Console\Kernel::class, App\Console\Kernel::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -101,10 +94,11 @@ $app->singleton(
 // ]);
 
  $app->routeMiddleware([
-     'auth'  => App\Http\Middleware\Authenticate::class,
-     'cors'  => App\Http\Middleware\CorsMiddleware::class,
-     'admin' => \App\Http\Middleware\AdminAuthGuard::class,
-     'ops'   => \App\Http\Middleware\OpsAuthGuard::class,
+     'auth'    => App\Http\Middleware\Auth\Authenticate::class,
+     'cors'    => App\Http\Middleware\CorsMiddleware::class,
+     'admin'   => \App\Http\Middleware\Auth\AdminAuthGuard::class,
+     'ops'     => \App\Http\Middleware\Auth\OpsAuthGuard::class,
+     'refresh' => \App\Http\Middleware\Auth\RefreshToken::class,
  ]);
 
 /*
