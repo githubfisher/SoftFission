@@ -137,11 +137,11 @@ return [
      */
 
     'errorFormat' => [
-        'msg'    => ':message',
-        'errors' => ':errors',
-        'status' => ':code',
-        'code'   => ':status_code',
-        'debug'  => ':debug',
+        'message' => ':message',
+        'error'   => ':errors',
+        'status'  => ':code',
+        'code'    => ':status_code',
+        'debug'   => ':debug',
     ],
 
     /*
