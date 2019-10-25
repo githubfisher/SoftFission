@@ -5,7 +5,13 @@
 Homestead.json
 Homestead.yaml
 .env
+.env.produce
+.env.local
+.env.dev
+.env.test
 .phpunit.result.cache
 .phpstorm.meta.php
 .php_cs.cache
 _ide_helper.php
+.DS_Store
+

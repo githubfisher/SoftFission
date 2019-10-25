@@ -1,13 +1,14 @@
 <?php
-
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Support\Arr;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -21,6 +22,7 @@ class Handler extends ExceptionHandler
         HttpException::class,
         ModelNotFoundException::class,
         ValidationException::class,
+        UnauthorizedHttpException::class,
     ];
 
     /**
@@ -28,8 +30,9 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $exception
-     * @return void
+     * @param Exception $exception
+     *
+     * @throws Exception
      */
     public function report(Exception $exception)
     {
@@ -45,6 +48,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof ValidationException) {
+            return response(['error' => Arr::first(Arr::collapse($exception->errors()))], 400);
+        }
+
+        if ($exception instanceof UnauthorizedHttpException) {
+            return response(['error' => $exception->getMessage()], 401);
+        }
+
         return parent::render($request, $exception);
     }
 }
