@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Api\User;
 
+use Log;
 use Auth;
 use App\Models\User\User;
 use Illuminate\Http\Request;
@@ -67,13 +68,14 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $this->validate($request, [
-            'mobile'   => 'required|mobile|exists:user',
+            'mobile'   => 'required|mobile',
             'password' => 'required|string|min:6|max:20',
         ]);
 
         $credentials = $request->only(['mobile', 'password']);
+        $token       = Auth::attempt($credentials);
 
-        return (($token = Auth::attempt($credentials))
+        return ($token
             ? response()->json(['token' => $token], 201)
             : response()->json(['error' => '账号或密码错误'], 401));
     }
