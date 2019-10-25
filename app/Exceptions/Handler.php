@@ -54,8 +54,6 @@ class Handler extends ExceptionHandler
         }
 
         if ($exception instanceof UnauthorizedHttpException) {
-            Log::debug(__FUNCTION__ . ' UnauthorizedHttpException');
-
             return response(['error' => $exception->getMessage()], 401);
         }
 
