@@ -56,8 +56,9 @@ class AuthController extends Controller
      * @Transaction({
      *  @request({"mobile": "13312348765", "password": "123456"}),
      *  @Response(201, body={"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9zZlwvdXNlclwvbWUiLCJpYXQiOjE1NzE5NzI5NTksImV4cCI6MTU3MTk3MzA4OCwibmJmIjoxNTcxOTczMDI4LCJqdGkiOiJwY2R2cktDbzg5VzFCSXJGIiwic3ViIjoxfQ.29Zsj7M7Eng6H27K7Hg_lwtgxqdk__EA03r0rg3ythQ"}),
-     *  @Response(401, body={"error": "账号或密码错误"})
+     *  @Response(401, body={"message": "账号或密码错误"})
      * })
+     *
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
@@ -84,12 +85,33 @@ class AuthController extends Controller
      * @Transaction({
      *  @request(headers={"Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9zZlwvdXNlclwvbWUiLCJpYXQiOjE1NzE5NzI5NTksImV4cCI6MTU3MTk3MzA4OCwibmJmIjoxNTcxOTczMDI4LCJqdGkiOiJwY2R2cktDbzg5VzFCSXJGIiwic3ViIjoxfQ.29Zsj7M7Eng6H27K7Hg_lwtgxqdk__EA03r0rg3ythQ"}),
      *  @Response(200, body={"id":1,"pid":0,"username":"foo","mobile":"13312348765","email":"123@456.com","openid":"","nickname":"","headimgurl":"","deleted_at":null,"created_at":"2019-10-24 16:45:09","updated_at":"2019-10-24 16:45:09"}),
-     *  @Response(401, body={"error": "Unauthorized"})
+     *  @Response(401, body={"message": "Unauthorized"})
      * })
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function me()
     {
         return response()->json(Auth::user());
+    }
+
+    /**
+     * 用户登出
+     * @Get("/logout")
+     * @Versions({"v1"})
+     * @Transaction({
+     *  @request(headers={"Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9zZlwvdXNlclwvbWUiLCJpYXQiOjE1NzE5NzI5NTksImV4cCI6MTU3MTk3MzA4OCwibmJmIjoxNTcxOTczMDI4LCJqdGkiOiJwY2R2cktDbzg5VzFCSXJGIiwic3ViIjoxfQ.29Zsj7M7Eng6H27K7Hg_lwtgxqdk__EA03r0rg3ythQ"}),
+     *  @Response(200, body={}),
+     *  @Response(401, body={"message": "Unauthorized"}),
+     *  @Response(401, body={"message": "Token has expired"}),
+     * })
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
+        Auth::logout();
+
+        return response()->json([], 200);
     }
 }
