@@ -63,6 +63,7 @@ $app->withEloquent();
 $app->configure('api');
 $app->configure('auth');
 $app->configure('allow_origins');
+$app->configure('swagger-lume');
 
 /*
 |--------------------------------------------------------------------------
