@@ -44,7 +44,7 @@ class AuthController extends Controller
             'username' => $request->get('username'),
             'password' => Hash::make($request->get('password')),
         ]);
-        $token = Auth::guard('user')->login($user);
+        $token = Auth::login($user);
 
         return response()->json(compact('token'));
     }
