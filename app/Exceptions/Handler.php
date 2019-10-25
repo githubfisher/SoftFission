@@ -1,7 +1,6 @@
 <?php
 namespace App\Exceptions;
 
-use Log;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
