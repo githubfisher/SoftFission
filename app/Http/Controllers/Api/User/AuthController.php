@@ -72,9 +72,8 @@ class AuthController extends Controller
         ]);
 
         $credentials = $request->only(['mobile', 'password']);
-        $token       = Auth::attempt($credentials);
 
-        return ($token
+        return (($token = Auth::attempt($credentials))
             ? response()->json(['token' => $token], 201)
             : response()->json(['error' => '账号或密码错误'], 401));
     }
