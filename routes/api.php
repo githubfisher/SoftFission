@@ -47,7 +47,22 @@ $api->version('v1', [
     });
 
     /**
-     * 需认证的接口
+     * 需认证但不需要刷新token的接口
+     */
+    $api->group(['middleware' => 'api.auth'], function (\Dingo\Api\Routing\Router $api) {
+        $api->get('/user/auth/logout', 'User\AuthController@logout');
+    });
+
+    $api->group(['middleware' => ['admin', 'api.auth']], function (\Dingo\Api\Routing\Router $api) {
+        $api->get('/admin/auth/logout', 'Admin\AuthController@logout');
+    });
+
+    $api->group(['middleware' => ['ops', 'api.auth']], function (\Dingo\Api\Routing\Router $api) {
+        $api->get('/ops/auth/logout', 'Ops\AuthController@logout');
+    });
+
+    /**
+     * 需认证且刷新token的接口
      */
     $api->group(['middleware' => ['refresh', 'api.auth']], function (\Dingo\Api\Routing\Router $api) {
         $api->get('/user/auth/me', 'User\AuthController@me');
