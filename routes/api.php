@@ -35,11 +35,13 @@ $api->version('v1', [
         $api->post('login', 'User\AuthController@login');
         $api->post('register', 'User\AuthController@register');
     });
-    $api->group(['prefix' => '/admin'], function (\Dingo\Api\Routing\Router $api) {
+
+    $api->group(['prefix' => '/admin', 'middleware' => 'admin'], function (\Dingo\Api\Routing\Router $api) {
         $api->post('login', 'Admin\AuthController@login');
         $api->post('register', 'Admin\AuthController@register');
     });
-    $api->group(['prefix' => '/ops'], function (\Dingo\Api\Routing\Router $api) {
+
+    $api->group(['prefix' => '/ops', 'middleware' => 'ops'], function (\Dingo\Api\Routing\Router $api) {
         $api->post('login', 'Ops\AuthController@login');
         $api->post('register', 'Ops\AuthController@register');
     });
@@ -50,9 +52,11 @@ $api->version('v1', [
     $api->group(['middleware' => 'api.auth'], function (\Dingo\Api\Routing\Router $api) {
         $api->get('/user/me', 'User\AuthController@me');
     });
+
     $api->group(['middleware' => ['admin', 'api.auth']], function (\Dingo\Api\Routing\Router $api) {
         $api->get('/admin/me', 'Admin\AuthController@me');
     });
+
     $api->group(['middleware' => ['ops', 'api.auth']], function (\Dingo\Api\Routing\Router $api) {
         $api->get('/ops/me', 'Ops\AuthController@me');
     });
