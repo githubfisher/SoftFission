@@ -49,15 +49,15 @@ $api->version('v1', [
     /**
      * 需认证的接口
      */
-    $api->group(['middleware' => 'api.auth'], function (\Dingo\Api\Routing\Router $api) {
+    $api->group(['middleware' => ['refresh', 'api.auth']], function (\Dingo\Api\Routing\Router $api) {
         $api->get('/user/me', 'User\AuthController@me');
     });
 
-    $api->group(['middleware' => ['admin', 'api.auth']], function (\Dingo\Api\Routing\Router $api) {
+    $api->group(['middleware' => ['admin', 'refresh', 'api.auth']], function (\Dingo\Api\Routing\Router $api) {
         $api->get('/admin/me', 'Admin\AuthController@me');
     });
 
-    $api->group(['middleware' => ['ops', 'api.auth']], function (\Dingo\Api\Routing\Router $api) {
+    $api->group(['middleware' => ['ops', 'refresh', 'api.auth']], function (\Dingo\Api\Routing\Router $api) {
         $api->get('/ops/me', 'Ops\AuthController@me');
     });
 });
