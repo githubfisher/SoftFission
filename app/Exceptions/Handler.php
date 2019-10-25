@@ -1,6 +1,7 @@
 <?php
 namespace App\Exceptions;
 
+use Log;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
@@ -22,6 +23,7 @@ class Handler extends ExceptionHandler
         HttpException::class,
         ModelNotFoundException::class,
         ValidationException::class,
+        UnauthorizedHttpException::class,
     ];
 
     /**
@@ -52,6 +54,8 @@ class Handler extends ExceptionHandler
         }
 
         if ($exception instanceof UnauthorizedHttpException) {
+            Log::debug(__FUNCTION__ . ' UnauthorizedHttpException');
+
             return response(['error' => $exception->getMessage()], 401);
         }
 
